@@ -1,28 +1,17 @@
-FROM python:3.11-slim
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
 
-# Set working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy dependencies first for better caching
-COPY requirements.txt .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Install system dependencies (if you need DNS tools during dev)
-RUN apt-get update && apt-get install -y --no-install-recommends bind9-dnsutils && rm -rf /var/lib/apt/lists/*
+# Install Flask
+RUN pip install --no-cache-dir flask
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy app files
-COPY . .
-
-# Expose the Flask port
+# Expose port 5000 for Flask
 EXPOSE 5000
 
-# Environment variables for development
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_ENV=development
-ENV FLASK_DEBUG=1
-
-# Use flask run for hot reloading in dev
-CMD ["flask", "run"]
+# Run app.py when the container launches
+CMD ["python", "app.py"]
