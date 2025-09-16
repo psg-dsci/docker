@@ -1,13 +1,15 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
-# Set the working directory in the container
+FROM python:3.11-slim
+
 WORKDIR /app
-# Copy the current directory contents into the container at /app
-COPY . /app
-# Install Flask
+
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-# Expose port 8000 for Flask
-ENV_PORT=5000
+
+COPY . .
+
+ENV PYTHONUNBUFFERED=1
+ENV PORT=5000
 EXPOSE 5000
-# Run app.py when the container launches
-CMD ["gunicorn","-b", "0.0.0.0:5000", "app.app"]
+
+# Replace "app:app" with your module and Flask app name
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
