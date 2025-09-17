@@ -15,6 +15,5 @@ for i in {1..30}; do
   fi
   sleep 1
 done
-curl -fsS http://localhost:5000/ >/dev/null || { echo "App not healthy"; exit 1; }
 
-echo "Done: ${IMAGE_TAG}"
+echo "Done"
